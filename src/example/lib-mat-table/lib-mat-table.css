@@ -1,14 +1,33 @@
 
+
 .mat-table-container {
   overflow-x: auto;
+  position: relative;
 }
 
-.mat-table {
+
+
+
+.mat-loading-shade {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.mat-mdc-table {
   width: 100%;
 }
 
-.mat-cell,
-.mat-header-cell {
+.mat-mdc-cell,
+.mat-mdc-header-cell {
   min-width: var(--custom-header-cell-min-width, 100px);
   width: var(--custom-header-cell-width,auto);
 }
@@ -21,19 +40,19 @@
 }
 
 
-.mat-menu-item {
+.mat-mdc-menu-item {
   min-width: 180px;
 }
 
-:host-context(.lib-mat-table-black-header) .mat-header-cell {
+:host-context(.lib-mat-table-black-header) .mat-mdc-header-cell {
   background: #666;
   color: #fff;
 }
 
-:host-context(.lib-mat-table-black-header) .mat-header-cell:first-child {
+:host-context(.lib-mat-table-black-header) .mat-mdc-header-cell:first-child {
   border-top-left-radius: 5px;
 }
 
-:host-context(.lib-mat-table-black-header) .mat-header-cell:last-child {
+:host-context(.lib-mat-table-black-header) .mat-mdc-header-cell:last-child {
   border-top-right-radius: 5px;
 }

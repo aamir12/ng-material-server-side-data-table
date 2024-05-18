@@ -47,8 +47,7 @@ import { WINDOW } from '../window.service';
   ],
 })
 export class LibMatTable<T>
-  implements  OnDestroy, OnChanges,OnInit
-{
+  implements OnDestroy, OnChanges, OnInit {
   displayedColumns: string[] = [];
   @Input() pageSizeOptions = [5, 10, 25, 50, 100];
   @Input() pageSize: number = 10;
@@ -66,7 +65,7 @@ export class LibMatTable<T>
   @Input() sortDirection: 'asc' | 'desc' | '' = 'asc';
   tableContainerId = uniqueId();
 
-  
+
   @Input() fetchDataFn: (
     sort: string,
     order: SortDirection,
@@ -82,11 +81,11 @@ export class LibMatTable<T>
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
-  @ViewChild(MatSort,{static:true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   destory$ = new Subject<void>();
 
-  
+
 
   ngOnInit(): void {
     this.setUpcolumnsSetting();
@@ -111,9 +110,8 @@ export class LibMatTable<T>
           ).pipe(catchError(() => observableOf(null)));
         }),
         map((data) => {
-          this.isLoadingResults = false;
-          this.isRateLimitReached = data === null;
 
+          this.isLoadingResults = false;
           if (data === null) {
             return [];
           }
@@ -124,7 +122,7 @@ export class LibMatTable<T>
       )
       .pipe(takeUntil(this.destory$))
       .subscribe((data) => (this.data = data));
-  } 
+  }
 
 
   setUpcolumnsSetting() {
@@ -138,21 +136,21 @@ export class LibMatTable<T>
       this.displayedColumns = displayedCols;
     }
   }
-  
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (
       changes['filterString'] &&
       changes['filterString'].currentValue !==
-        changes['filterString'].previousValue
+      changes['filterString'].previousValue
     ) {
       this.filterStringNotify.next(this.filterString);
     }
   }
 
 
-  isActionSticky(position:'start'|'end'):boolean {
-    return   this.actionBtns?.positions === position && !!this.actionBtns?.sticky;
+  isActionSticky(position: 'start' | 'end'): boolean {
+    return this.actionBtns?.positions === position && !!this.actionBtns?.sticky;
   }
 
   onRowClick(row: T) {
