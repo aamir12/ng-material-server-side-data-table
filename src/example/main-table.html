@@ -1,0 +1,25 @@
+<!-- <mat-form-field>
+  <mat-label>Search</mat-label>
+  <input matInput [(ngModel)]="filterString" placeholder="Search" />
+</mat-form-field> -->
+
+<mat-form-field class="example-form-field">
+  <mat-label>Search</mat-label>
+  <input matInput type="text" [(ngModel)]="filterString" />
+  @if (filterString) {
+  <button
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="filterString=''"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  }
+</mat-form-field>
+
+<table-http-example
+  [fetchDataFn]="fetchDataFn"
+  [filterString]="filterString"
+  [displayedColumns]="displayedColumns"
+></table-http-example>
