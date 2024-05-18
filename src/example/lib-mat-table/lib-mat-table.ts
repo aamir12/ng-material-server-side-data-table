@@ -86,10 +86,7 @@ export class LibMatTable<T>
   @ViewChild(MatSort,{static:true}) sort: MatSort;
   destory$ = new Subject<void>();
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW private window: Window,
-    ) {}
+  
 
   ngOnInit(): void {
     this.setUpcolumnsSetting();
