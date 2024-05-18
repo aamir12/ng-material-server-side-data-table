@@ -1,4 +1,4 @@
-<div class="example-container mat-elevation-z8">
+<!-- <div class="example-container mat-elevation-z8">
   @if (isLoadingResults || isRateLimitReached) {
   <div class="example-loading-shade">
     @if (isLoadingResults) {
@@ -17,19 +17,19 @@
       matSortDisableClear
       matSortDirection="desc"
     >
-      <!-- Title Column -->
+
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let row">{{row.name}}</td>
       </ng-container>
 
-      <!-- State Column -->
+
       <ng-container matColumnDef="username">
         <th mat-header-cell *matHeaderCellDef>Username</th>
         <td mat-cell *matCellDef="let row">{{row.username}}</td>
       </ng-container>
 
-      <!-- Created Column -->
+
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Email
@@ -45,11 +45,130 @@
   <mat-paginator
     [pageSizeOptions]="pageSizeOptions"
     [length]="resultsLength"
-    [pageSize]="perPage"
+    [pageSize]="pageSize"
     aria-label="Select page of GitHub search results"
   ></mat-paginator>
 </div>
+ -->
 
-<!-- Copyright 2024 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at https://angular.io/license -->
+<!-- start -->
+
+<div [ngClass]="containerClasses">
+  <div
+    class="lib-mat-table mat-table-container"
+    [ngClass]="tableContainerClasses"
+    [id]="tableContainerId"
+  >
+    <table
+      #table
+
+
+
+      [matSortActive]="sortActive"
+      [matSortDirection]="sortDirection"
+
+      mat-table
+      [dataSource]="data"
+      class="example-table"
+      matSort
+    >
+      <ng-container matColumnDef="action" *ngIf="!!actionBtns" [sticky]="isActionSticky('start')" [stickyEnd]="isActionSticky('end')">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          disabled="true"
+          [ngStyle]="actionBtns.headerStyle ? actionBtns.headerStyle : {}"
+          [ngClass]="
+            actionBtns.headerClasses ? actionBtns.headerClasses : []
+          "
+        >
+          Action
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [ngStyle]="actionBtns.dataStyle ? actionBtns.dataStyle : {}"
+          [ngClass]="
+            actionBtns.dataClasses ? actionBtns.dataClasses : []
+          "
+        >
+          <button
+            (click)="onOptionClick($event)"
+            [matMenuTriggerFor]="menu"
+            class="action-btn"
+            type="button"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="lib-mat-table-actions-menu"
+            xPosition="after"
+          >
+            <ng-container *ngFor="let action of actionBtns.buttons">
+              <button
+                mat-menu-item
+                *ngIf="action.access ? action.access(row) : true"
+                (click)="action.onClick(row)"
+              >
+                <mat-icon *ngIf="action.icon">{{ action.icon }}</mat-icon>
+                <span>{{ action.name }}</span>
+              </button>
+            </ng-container>
+          </mat-menu>
+        </td>
+      </ng-container>
+      <ng-container [matColumnDef]="col.name" *ngFor="let col of columns">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [disabled]="col.disableSorting"
+          [ngStyle]="col.headerStyle ? col.headerStyle : {}"
+          [ngClass]="col.headerClasses ? col.headerClasses : []"
+        >
+          {{ col.displayName }}
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [ngStyle]="col.dataStyle ? col.dataStyle : {}"
+          [ngClass]="col.dataClasses ? col.dataClasses : []"
+        >
+          {{ col.transForm ? col.transForm(row[col.name]) : row[col.name] }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onRowClick(row)"
+        [class.lib-mat-table-cursor-pointer]="rowClickListner"
+        [class.lib-mat-table-cursor-default]="!rowClickListner"
+      ></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td
+          class="mat-cell text-center"
+          [attr.colspan]="displayedColumns.length"
+        >
+         {{ isLoadingResults ? loadingLable : noDataFoundLable }} 
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  
+  <mat-paginator
+  #paginator
+  [ngClass]="paginationClasses"
+    [pageSizeOptions]="pageSizeOptions"
+    [length]="resultsLength"
+    [pageSize]="pageSize"
+    aria-label="Select page of GitHub search results"
+  ></mat-paginator>
+
+</div>
+
+

@@ -7,9 +7,13 @@ import {
   OnDestroy,
   OnChanges,
   SimpleChanges,
+  Inject,
+  OnInit,
 } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 import {
   BehaviorSubject,
   merge,
@@ -21,8 +25,10 @@ import {
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DatePipe } from '@angular/common';
-import { FetchResponse } from '../table.interface';
+import { CommonModule, DOCUMENT, DatePipe } from '@angular/common';
+import { FetchResponse, IActionBtnConfiguration, IColumn } from './table.interface';
+import { uniqueId } from '../utility.fn';
+import { WINDOW } from '../window.service';
 
 @Component({
   selector: 'lib-mat-table',
@@ -34,16 +40,32 @@ import { FetchResponse } from '../table.interface';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatMenuModule,
+    MatIconModule,
     DatePipe,
+    CommonModule
   ],
 })
 export class LibMatTable<T>
-  implements AfterViewInit, OnDestroy, OnChanges
+  implements  OnDestroy, OnChanges,OnInit
 {
-  @Input() displayedColumns: string[] = [];
+  displayedColumns: string[] = [];
   @Input() pageSizeOptions = [5, 10, 25, 50, 100];
-  @Input() perPage: number = 10;
+  @Input() pageSize: number = 10;
   @Input() filterString: string = '';
+  @Input() containerClasses: string[] = [];
+  @Input() tableContainerClasses: string[] = [];
+  @Input() paginationClasses: string[] = [];
+  @Input() limitSizes: number[] = [5, 10, 25, 50, 100];
+  @Input() columns: IColumn[] = [];
+  @Input() rowClickListner!: (data: T) => void;
+  @Input() actionBtns: IActionBtnConfiguration<T> | undefined = undefined;
+  @Input() noDataFoundLable: string = 'No Data Found.';
+  @Input() sortActive: string = '';
+  @Input() loadingLable: string = 'Loading...';
+  @Input() sortDirection: 'asc' | 'desc' | '' = 'asc';
+  tableContainerId = uniqueId();
+  
   @Input() fetchDataFn: (
     sort: string,
     order: SortDirection,
@@ -59,10 +81,17 @@ export class LibMatTable<T>
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
+  @ViewChild(MatSort,{static:true}) sort: MatSort;
   destory$ = new Subject<void>();
-  ngAfterViewInit() {
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
+    ) {}
+
+  ngOnInit(): void {
+    this.setUpcolumnsSetting();
     merge(this.filterStringNotify, this.sort.sortChange)
       .pipe(takeUntil(this.destory$))
       .subscribe(() => (this.paginator.pageIndex = 0));
@@ -97,7 +126,21 @@ export class LibMatTable<T>
       )
       .pipe(takeUntil(this.destory$))
       .subscribe((data) => (this.data = data));
+  } 
+
+
+  setUpcolumnsSetting() {
+    const displayedCols = this.columns.map((x) => x.name);
+    if (!!this.actionBtns) {
+      this.displayedColumns =
+        this.actionBtns.positions === 'start'
+          ? ['action', ...displayedCols]
+          : [...displayedCols, 'action'];
+    } else {
+      this.displayedColumns = displayedCols;
+    }
   }
+  
 
   ngOnChanges(changes: SimpleChanges) {
     if (
@@ -107,6 +150,21 @@ export class LibMatTable<T>
     ) {
       this.filterStringNotify.next(this.filterString);
     }
+  }
+
+
+  isActionSticky(position:'start'|'end'):boolean {
+    return   this.actionBtns?.positions === position && !!this.actionBtns?.sticky;
+  }
+
+  onRowClick(row: T) {
+    if (this.rowClickListner) {
+      this.rowClickListner(row);
+    }
+  }
+
+  onOptionClick(event: Event) {
+    event.stopPropagation();
   }
 
   ngOnDestroy() {

@@ -18,8 +18,19 @@
   }
 </mat-form-field>
 
+
+
 <lib-mat-table
   [fetchDataFn]="fetchDataFn"
+  class="lib-mat-table-black-header"
   [filterString]="filterString"
-  [displayedColumns]="displayedColumns"
+  [columns]="columns"
+  [actionBtns]="actionBtns"
+  [pageSize]="10"
+  [containerClasses]="['py-5']"
+  [tableContainerClasses]="['pt-2']"
+  [rowClickListner]="onRowClick"
+  [sortActive]="'name'"
+  [sortDirection]="'desc'"
+  [paginationClasses] = "['bg-transparent','mt-3']"
 ></lib-mat-table>
