@@ -54,6 +54,15 @@
 <!-- start -->
 
 <div [ngClass]="containerClasses">
+
+  @if (isLoadingResults || isRateLimitReached) {
+    <div class="example-loading-shade">
+      @if (isLoadingResults) {
+      <mat-spinner></mat-spinner>
+      }
+    </div>
+    }
+    
   <div
     class="lib-mat-table mat-table-container"
     [ngClass]="tableContainerClasses"
