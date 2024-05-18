@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { TableHttpExample } from './table-http-example';
+import { LibMatTable } from './lib-mat-table/lib-mat-table';
 import { DataSevice } from './data-service';
 import { SortDirection } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: 'main-table.html',
   standalone: true,
   imports: [
-    TableHttpExample,
+    LibMatTable,
     FormsModule,
     MatInputModule,
     MatIconModule,

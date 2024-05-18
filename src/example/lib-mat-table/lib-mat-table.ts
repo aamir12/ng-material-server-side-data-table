@@ -22,12 +22,12 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe } from '@angular/common';
-import { FetchResponse } from './table.interface';
+import { FetchResponse } from '../table.interface';
 
 @Component({
-  selector: 'table-http-example',
-  styleUrl: 'table-http-example.css',
-  templateUrl: 'table-http-example.html',
+  selector: 'lib-mat-table',
+  styleUrl: 'lib-mat-table.css',
+  templateUrl: 'lib-mat-table.html',
   standalone: true,
   imports: [
     MatProgressSpinnerModule,
@@ -37,7 +37,7 @@ import { FetchResponse } from './table.interface';
     DatePipe,
   ],
 })
-export class TableHttpExample<T>
+export class LibMatTable<T>
   implements AfterViewInit, OnDestroy, OnChanges
 {
   @Input() displayedColumns: string[] = [];
