@@ -1,42 +1,39 @@
-/* Structure */
-.example-container {
-  position: relative;
+
+.mat-table-container {
+  overflow-x: auto;
 }
 
-.example-table-container {
-  position: relative;
-  min-height: 200px;
-  overflow: auto;
-}
-
-table {
+.mat-table {
   width: 100%;
 }
 
-.example-loading-shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.mat-cell,
+.mat-header-cell {
+  min-width: var(--custom-header-cell-min-width, 100px);
+  width: var(--custom-header-cell-width,auto);
 }
 
-.example-rate-limit-reached {
-  max-width: 360px;
-  text-align: center;
+.action-btn {
+  background: transparent;
+  border: none;
+  width: 50px;
+  height: 100%;
 }
 
-/* Column Widths */
-.mat-column-number,
-.mat-column-state {
-  max-width: 64px;
+
+.mat-menu-item {
+  min-width: 180px;
 }
 
-.mat-column-created {
-  max-width: 124px;
+:host-context(.lib-mat-table-black-header) .mat-header-cell {
+  background: #666;
+  color: #fff;
+}
+
+:host-context(.lib-mat-table-black-header) .mat-header-cell:first-child {
+  border-top-left-radius: 5px;
+}
+
+:host-context(.lib-mat-table-black-header) .mat-header-cell:last-child {
+  border-top-right-radius: 5px;
 }

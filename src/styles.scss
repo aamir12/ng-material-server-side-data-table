@@ -7,3 +7,61 @@ body {
 html, body {
   height: 100%;
 }
+
+
+
+.lib-mat-table-cursor-pointer {
+  cursor: pointer;
+}
+
+.lib-mat-table-cursor-default {
+  cursor: default;
+}
+
+.lib-mat-table-black-header .mat-sort-header-sorted .mat-sort-header-arrow {
+  color: #fff !important;
+}
+
+.lib-mat-table .mat-sort-header-container {
+  justify-content: center !important;
+}
+
+.lin-mat-table .mat-sort-header-disabled .mat-sort-header-arrow {
+  display: none !important;
+}
+
+.lib-mat-table .mat-column-action {
+  padding-left: 0px !important;
+  width: 50px;
+}
+
+// Menu style changes
+// .lib-mat-table-actions-menu {
+//   box-shadow: none !important;
+// }
+
+// .lib-mat-table-actions-menu.mat-menu-panel {
+//   border-radius: 0px !important;
+//   border: solid 1px black !important;
+// }
+// .lib-mat-table-actions-menu .mat-menu-content:not(:empty) {
+//   padding-top: 0px;
+//   padding-bottom: 0px;
+// }
+
+// .lib-mat-table-actions-menu .mat-menu-item {
+//   height: 35px;
+//   line-height: 35px;
+// }
+
+// .lib-mat-table-actions-menu .mat-menu-item:hover:not([disabled]),
+// .lib-mat-table-actions-menu .mat-menu-item.cdk-program-focused:not([disabled]),
+// .lib-mat-table-actions-menu .mat-menu-item.cdk-keyboard-focused:not([disabled]),
+// .lib-mat-table-actions-menu .mat-menu-item-highlighted:not([disabled]),
+// .lib-mat-table-actions-menu .mat-menu-item:hover {
+//   background: transparent;
+// }
+
+.lib-mat-table th.mat-table-sticky {
+  border: none !important;
+}
