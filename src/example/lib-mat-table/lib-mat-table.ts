@@ -65,6 +65,7 @@ export class LibMatTable<T>
   @Input() loadingLable: string = 'Loading...';
   @Input() sortDirection: 'asc' | 'desc' | '' = 'asc';
   tableContainerId = uniqueId();
+
   
   @Input() fetchDataFn: (
     sort: string,
@@ -87,7 +88,7 @@ export class LibMatTable<T>
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW) private window: Window,
+    @Inject(WINDOW private window: Window,
     ) {}
 
   ngOnInit(): void {
