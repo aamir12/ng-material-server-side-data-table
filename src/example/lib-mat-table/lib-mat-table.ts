@@ -9,6 +9,7 @@ import {
   SimpleChanges,
   Inject,
   OnInit,
+  inject,
 } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
@@ -22,13 +23,14 @@ import {
   Subject,
   takeUntil,
 } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule, DOCUMENT, DatePipe } from '@angular/common';
 import { FetchResponse, IActionBtnConfiguration, IColumn } from './table.interface';
 import { uniqueId } from '../utility.fn';
 import { WINDOW } from '../window.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'lib-mat-table',
@@ -85,13 +87,20 @@ export class LibMatTable<T>
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   destory$ = new Subject<void>();
 
-
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.setUpcolumnsSetting();
     merge(this.filterStringNotify, this.sort.sortChange)
-      .pipe(takeUntil(this.destory$))
-      .subscribe(() => (this.paginator.pageIndex = 0));
+      .pipe(
+        takeUntil(this.destory$),
+        tap(() => {
+          this.paginator.pageIndex = 0
+        })
+      )
+
+      // .subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page, this.filterStringNotify)
       .pipe(
