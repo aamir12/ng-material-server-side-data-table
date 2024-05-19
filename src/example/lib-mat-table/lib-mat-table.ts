@@ -96,17 +96,14 @@ export class LibMatTable<T>
     merge(this.sort.sortChange, this.paginator.page, this.filterStringNotify)
       .pipe(
         startWith({}),
-        switchMap((filterString) => {
+        switchMap(() => {
           this.isLoadingResults = true;
-          console.log(this.paginator);
-          console.log(filterString);
-          let searchText = typeof filterString === 'string' ? filterString : '';
           return this.fetchDataFn(
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,
             this.paginator.pageSize,
-            searchText
+            this.filterString
           ).pipe(catchError(() => observableOf(null)));
         }),
         map((data) => {
